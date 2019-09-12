@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: ceph-exporter
+  name: ceph-exporter
+  namespace: monitoring
+spec:
+  endpoints:
+  - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    interval: 60s
+    scrapeTimeout: 30s
+    port: http-ceph
+    scheme: http
+    tlsConfig:
+      insecureSkipVerify: true
+  jobLabel: k8s-app
+  selector:
+    matchLabels:
+      k8s-app: ceph-exporter

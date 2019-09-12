@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    app: ceph-exporter
+  name: ceph-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ceph-exporter
+  template:
+    metadata:
+      labels:
+        app: ceph-exporter
+    spec:
+      containers:
+      - image: 100.2.50.225/com.inspur/prometheus/ceph-exporter:v20190704
+        name: ceph-exporter
+        ports:
+        - containerPort: 9128
+          name: http-ceph
+        securityContext:
+          privileged: true  
+        resources:
+          limits:
+            cpu: 20m
+            memory: 40Mi
+          requests:
+            cpu: 10m
+            memory: 20Mi
+        volumeMounts:
+        - mountPath: /etc/ceph
+          name: etcpath
+          readOnly: false
+      nodeName: k8s1
+      hostNetwork: true
+      hostPID: true
+      serviceAccountName: ceph-exporter
+      volumes:
+      - hostPath:
+          path: /etc/ceph
+        name: etcpath
