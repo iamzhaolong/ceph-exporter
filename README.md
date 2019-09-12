@@ -1,4 +1,4 @@
-# ceph-exporter
+# Add ceph-exporter to prometheus operator
 kubernetes attach to ceph.
 ceph-exporter via prometheus operator.
 ## Dependencies
